@@ -23,9 +23,9 @@ def bag_of_words(tokenized_sentence, all_words):
 
   return bag
 
-a = "organize"
+# a = "organize"
 
-print(a)
+# print(a)
 
-a = stem(a)
-print(a)
+# a = stem(a)
+# print(a)
