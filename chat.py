@@ -13,7 +13,7 @@ from weirdbackend import chatPreparation
 
 
 
-
+context = None
 
 
 bot_name = "Steve"
@@ -40,13 +40,47 @@ while True:
 
     
     if weirdbackend.prob.item() > 0.75: 
-        for intent in weirdbackend.intents['intents']:
+
+        if context == None:
+
+            for intent in weirdbackend.intents['intents']:
+                if weirdbackend.tag == intent["tag"]:
+                    time.sleep(1)
+                    print(f"{bot_name}: {random.choice(intent['responses'])}")
+                    # 1. add soemthing here that if the intent has a context_set, a new variable of "context" is defined with it
+                    if "context_set" in intent:
+                        context = intent["context_set"]
+
+
+        # 2. IF context is set, check that the context_filter is equal to the variable "context"
+        # 3. IF the if statement 2 is correct, make the context null
+
+        elif context != None:
+
+            for intent in weirdbackend.intents['intents']:
+            
+                if weirdbackend.tag == intent["tag"]: 
+                    if "context_filter" in intent and context == intent["context_filter"]:
+                        time.sleep(1)
+                        print(f"{bot_name}: {random.choice(intent['responses'])}")
+                        # 1. add soemthing here that if the intent has a context_set, a new variable of "context" is defined with it
+                        context = None
+                        if "context_set" in intent:
+                            context = intent["context_set"]
+                        
+                    else:
+                        time.sleep(1)
+                        print(f"{bot_name}: I am sorry, I dont understand the answer, lets forget the question.")
+                        context = None
+
             # 2. IF context is set, check that the context_filter is equal to the variable "context"
             # 3. IF the if statement 2 is correct, make the context null
-            if weirdbackend.tag == intent["tag"]:
-                time.sleep(1)
-                print(f"{bot_name}: {random.choice(intent['responses'])}")
-                # 1. add soemthing here that if the intent has a context_set, a new variable of "context" is defined with it
+
+    elif context != None:
+        time.sleep(1)
+        print(f"{bot_name}: I am sorry, I dont understand the answer, lets forget the question.")
+        context = None
+
     else:
         time.sleep(1)
         print(f"{bot_name}: I do not understand...")
